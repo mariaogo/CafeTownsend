@@ -1,6 +1,7 @@
 package net.maria.selenium.login;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -9,6 +10,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 public class LoginTest {
     public static WebDriver driver;
@@ -42,7 +45,16 @@ public class LoginTest {
         passwordElement.sendKeys("Skywalker");
 
         driver.findElement(By.tagName("button")).click();
-        driver.findElement(By.id("greetings"));
+
+        WebElement loggedInPage = driver.findElement(By.id("greetings"));
+
+        String textLoggedinPage = loggedInPage.getText();
+
+        System.out.print(textLoggedinPage);
+
+        Assert.assertTrue(
+                "Hello Luke".equals(textLoggedinPage)
+        );
 
         try {
             Thread.sleep(10000);
@@ -73,9 +85,12 @@ public class LoginTest {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-
-            driver.findElement(By.id("greetings"));
         }
+
+        WebElement errorMessage = driver.findElement(By.cssSelector("#login-form > fieldset > p.error-message.ng-binding"));
+        String inlogged = errorMessage.getText();
+        System.out.print("gugwugqd " + inlogged);
+
 
     }
 }
