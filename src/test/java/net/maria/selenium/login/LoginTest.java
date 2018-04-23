@@ -81,16 +81,6 @@ public class LoginTest {
 
         driver.findElement(By.tagName("button")).click();
 
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        WebElement errorMessage = driver.findElement(By.cssSelector("#login-form > fieldset > p.error-message.ng-binding"));
-        String inlogged = errorMessage.getText();
-        System.out.print("gugwugqd " + inlogged);
-
 
     }
 }
