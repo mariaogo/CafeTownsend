@@ -81,6 +81,21 @@ public class LoginTest {
 
         driver.findElement(By.tagName("button")).click();
 
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                WebElement errorMessageElement = d.findElement(By.cssSelector("#login-form > fieldset > p.error-message.ng-binding"));
+                return errorMessageElement != null && errorMessageElement.isDisplayed();
+            }
+        });
 
+
+        WebElement errorMessage = driver.findElement(By.cssSelector("#login-form > fieldset > p.error-message.ng-binding"));
+        String inlogged = errorMessage.getText();
+        System.out.print(inlogged);
+
+        Assert.assertEquals(
+                "Invalid username or password!",
+                inlogged
+        );
     }
 }
