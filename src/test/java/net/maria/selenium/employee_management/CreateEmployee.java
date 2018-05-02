@@ -1,4 +1,4 @@
-package net.maria.selenium.logout;
+package net.maria.selenium.employee_management;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class LogoutTest {
+public class CreateEmployee {
     public static WebDriver driver;
 
     @BeforeClass
@@ -28,17 +28,16 @@ public class LogoutTest {
 
     public void successfulLogin() {
         driver.get("http://cafetownsend-angular-rails.herokuapp.com/login");
-
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
                 return d.findElement(By.cssSelector("#login-form > fieldset > label:nth-child(3) > input")) != null;
             }
         });
 
-        WebElement userNameElement = driver.findElement(By.cssSelector("#login-form > fieldset > label:nth-child(3) > input"));
+        final WebElement userNameElement = driver.findElement(By.cssSelector("#login-form > fieldset > label:nth-child(3) > input"));
         userNameElement.sendKeys("Luke");
 
-        WebElement passwordElement = driver.findElement(By.cssSelector("#login-form > fieldset > label:nth-child(4) > input"));
+        final WebElement passwordElement = driver.findElement(By.cssSelector("#login-form > fieldset > label:nth-child(4) > input"));
         passwordElement.sendKeys("Skywalker");
 
         driver.findElement(By.tagName("button")).click();
@@ -51,19 +50,35 @@ public class LogoutTest {
                 System.out.println("top = " + top);
                 return top.equals("0px");
             }
+
         });
     }
 
     @Test
-    public void successfulLogout() {
+    public void checkCreateEmployFormular() {
         successfulLogin();
 
-        final boolean isDisplayed = driver.findElement(By.cssSelector("body > div > header > div > p.main-button")).isDisplayed();
-        System.out.println("isDisplayed = " + isDisplayed);
+        final boolean createButtonIsDisplayed = driver.findElement(By.id("bAdd")).isDisplayed();
+        System.out.println("createButtonIsDisplayed = " + createButtonIsDisplayed);
+        Assert.assertEquals(true, createButtonIsDisplayed);
 
-        driver.findElement(By.cssSelector("body > div > header > div > p.main-button")).click();
-        final boolean displayedLoginButton = driver.findElement(By.cssSelector("#login-form > fieldset > button")).isDisplayed();
+        driver.findElement(By.id("bAdd")).click();
 
-        Assert.assertTrue(displayedLoginButton);
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.findElement(By.tagName("input")) != null;
+            }
+        });
+        driver.findElement(By.tagName("input")).isDisplayed();
+        driver.findElement(By.tagName("button")).isDisplayed();
+
+        WebElement firstInputField = driver.findElement(By.cssSelector("body > div > div > div > form > fieldset > label:nth-child(3) > span"));
+        String firstName = firstInputField.getText();
+        System.out.print(firstName);
+
+        Assert.assertEquals(
+                "First name:",
+                firstName
+        );
     }
 }
